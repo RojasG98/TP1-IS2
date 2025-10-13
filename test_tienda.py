@@ -91,3 +91,12 @@ def test_aplicar_descuento_con_mock():
     
     assert mock_producto.precio == 1.80
 
+def test_flujo_completo_carrito(tienda_con_productos):
+    carrito = []
+
+    assert tienda_con_productos.agregar_producto_carrito(carrito, "Leche") is True
+    assert tienda_con_productos.agregar_producto_carrito(carrito, "Pan") is True
+
+    total = tienda_con_productos.calcular_total_carrito(carrito)
+    assert total == 2.19 
+

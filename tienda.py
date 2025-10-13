@@ -33,3 +33,18 @@ class Tienda:
             return True
         else:
             raise ValueError("Porcentaje de descuento inválido")
+        
+    def calcular_total_carrito(self, carrito):
+        total = 0.0
+        for nombre in carrito:
+            producto = self.buscar_producto(nombre)
+            if producto:
+                total += producto.precio
+        return total
+    
+    def agregar_producto_carrito(self, carrito, nombre_producto):
+        producto = self.buscar_producto(nombre_producto)
+        if producto:
+            carrito.append(nombre_producto)
+            return True
+        return False
