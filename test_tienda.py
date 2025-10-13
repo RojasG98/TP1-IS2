@@ -1,6 +1,9 @@
 import pytest
+from unittest.mock import Mock
 from tienda import Tienda
 from producto import Producto
+
+
 
 def test_crear_tienda_inicial():
     tienda = Tienda()
@@ -94,4 +97,23 @@ def test_excepcion_en_actualizar_producto():
     tienda = Tienda()
     with pytest.raises(ValueError):
         tienda.actualizar_producto("NoExiste", 10.0)
+
+def test_aplicar_descuento_con_mock():
+    tienda = Tienda()
+    mock_producto = Mock()
+    mock_producto.nombre = "Chocolate"
+    mock_producto.precio = 2.00
+    mock_producto.categoria = "Dulces"
+    tienda.inventario = [mock_producto]
+    tienda.aplicar_descuento("Chocolate", 10)
+    
+    mock_producto.actualizar_precio.assert_called_once_with(1.80)
+
+def test_aplicar_descuento_invalid_percentage():
+    tienda = Tienda()
+    producto_nuevo = Producto("Galletas", 3.00, "Dulces")
+    tienda.agregar_producto(producto_nuevo)
+
+    with pytest.raises(ValueError):
+        tienda.aplicar_descuento("Galletas", 150)
 
