@@ -28,7 +28,7 @@ def test_agregar_producto_y_verificar_inventario():
     assert tienda.inventario[0].precio == 5.50
     assert tienda.inventario[0].categoria == "Lácteos"
 
-def test_buscar_producto_existente():
+def test_buscar_producto_existente(tienda_con_productos):
     producto_encontrado = tienda_con_productos.buscar_producto("Pan")
 
     assert producto_encontrado is not None
@@ -36,22 +36,22 @@ def test_buscar_producto_existente():
     assert producto_encontrado.precio == 1.20
     assert producto_encontrado.categoria == "Panadería"
 
-def test_buscar_producto_no_existente():
+def test_buscar_producto_no_existente(tienda_con_productos):
     producto_encontrado = tienda_con_productos.buscar_producto("Jugo")
 
     assert producto_encontrado is None
 
-def test_eliminar_producto_existente():
+def test_eliminar_producto_existente(tienda_con_productos):
     resultado_eliminacion = tienda_con_productos.eliminar_producto("Huevos")
 
     assert resultado_eliminacion is True
 
-def test_eliminar_producto_no_existente():
+def test_eliminar_producto_no_existente(tienda_con_productos):
     resultado_eliminacion = tienda_con_productos.eliminar_producto("Yogur")
 
     assert resultado_eliminacion is False
 
-def test_actualizar_producto_existente():
+def test_actualizar_producto_existente(tienda_con_productos):
 
     resultado_actualizacion = tienda_con_productos.actualizar_producto("Arroz", 1.20)
 
@@ -59,7 +59,7 @@ def test_actualizar_producto_existente():
     producto_actualizado = tienda_con_productos.buscar_producto("Arroz")
     assert producto_actualizado.precio == 1.20
 
-def test_actualizar_producto_no_existente():
+def test_actualizar_producto_no_existente(tienda_con_productos):
     resultado_actualizacion = tienda_con_productos.actualizar_producto("Lentejas", 1.80)
 
     assert resultado_actualizacion is False
@@ -85,8 +85,9 @@ def test_aplicar_descuento_con_mock():
     mock_producto.nombre = "Chocolate"
     mock_producto.precio = 2.00
     mock_producto.categoria = "Dulces"
+
     tienda.inventario = [mock_producto]
     tienda.aplicar_descuento("Chocolate", 10)
     
-    mock_producto.actualizar_precio.assert_called_once_with(1.80)
+    assert mock_producto.precio == 1.80
 
